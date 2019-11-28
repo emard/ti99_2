@@ -1,4 +1,4 @@
-# TI99_2
+# TI99/2
 
 Main repository is here: 
 [TI99/2](https://gitlab.com/pnru/ti99/tree/master/ti99_2)
