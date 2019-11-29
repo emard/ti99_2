@@ -16,11 +16,11 @@ LIBTRELLIS=$TRELLIS/libtrellis
 
 # synthesise design
 # generates warnings, but these are okay
-$YOSYS -q -p "synth_ecp5 -json vdp.json" tiram.v tirom.v evmvdp.v tms99000.v ps2kb.v vdp99_2.v hdmi.v
+$YOSYS -q -p "synth_ecp5 -json vdp.json" tiram.v tirom.v evmvdp.v tms99000.v ps2kb.v vdp99_2.v hdmi.v hexbus.v
 
 # place & route
 # assumes 25F device
-$NEXTPNR_ECP5 --25k --package CABGA381 --json vdp.json --lpf ulx3s.lpf --textcfg vdp.cfg
+$NEXTPNR_ECP5 --25k --package CABGA381 --json vdp.json --lpf ulx3s.lpf --lpf-allow-unconstrained --textcfg vdp.cfg
 
 # pack bitstream
 # idcode only needed when sending bitstream to 12F devices
