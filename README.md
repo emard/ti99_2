@@ -7,13 +7,17 @@ here are only additional files for easier compling ti99_2 on my
 trellis installation and some helper files for ESP32 standalone
 operation to load bistream and run the hexbus server
 
-create directory /sd/hexbus and upload "hexbus.py"
+create directory /sd/hexbus and upload "hexbus.py" and 
+bistream compressed with gzip -9 "ti99_2.bit.gz"
 
     ftp> mkdir sd
     ftp> mkdir sd/hexbus
     ftp> put hexbus.py
+    put> put ti99_2.bit.gz
 
-from python console start the server
+from python console this will load bistream and start hexbus server.
+Serial link to commandline prompt will be lost but hexbus server should
+keep running
 
     >>> import ti99
 
