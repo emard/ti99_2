@@ -62,7 +62,7 @@ module sys
   wire vma, hold, vint;
 `endif
   wire vde, hsyn, vsyn, video, viden;
-  wire [7:0] v8 = {8{video}}; // expand VDP video into 8 bits
+  wire [7:0] v8 = ~{8{video}}; // expand VDP video into 8 bits
 
 `ifdef __ICARUS__
   vdp99_2  vdp(1'd0, vde, hsyn, vsyn, video, vab, vdb_in, vma, hold, viden, /*vint*/);
