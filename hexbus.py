@@ -1,4 +1,4 @@
-from machine import UART, Pin
+from machine import UART
 import uselect
 import utime
 
@@ -9,7 +9,6 @@ class Hexbus:
     self.poll = uselect.poll()
     self.poll.register(self.u2, uselect.POLLIN)
     self.dbg = False
-    self.gpio0 = Pin(0, Pin.IN)
 
   def work(self):
     while 1:
