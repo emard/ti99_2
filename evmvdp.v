@@ -30,19 +30,26 @@ module sys
 
   // clock generation
   //
-  wire pll_250mhz, pll_125mhz, pll_25mhz;
+  wire pll_125mhz, pll_25mhz;
 
 `ifdef __ICARUS__
-  assign pll_250mhz = 0;
   assign pll_125mhz = 0;
   assign pll_25mhz  = clk_25mhz;
 `else
-  clk_25_250_125_25 clk_pll (
-    .clki(clk_25mhz),
-    .clko(pll_250mhz),
-    .clks1(pll_125mhz),
-    .clks2(pll_25mhz)
+  wire [3:0] clocks;
+  ecp5pll
+  #(
+      .in_hz( 25*1000000),
+    .out0_hz(125*1000000),
+    .out1_hz( 25*1000000)
+  )
+  ecp5pll_inst
+  (
+    .clk_i(clk_25mhz),
+    .clk_o(clocks)
   );
+  assign pll_125mhz = clocks[0];
+  assign pll_25mhz  = clocks[1];
 `endif
 
 `ifndef __ICARUS__
@@ -180,59 +187,3 @@ module sys
   assign led[7:2] = 0;
   /**/
 endmodule
-
-`ifndef __ICARUS__
-
-module clk_25_250_125_25(
-  input clki, 
-  output clks1,
-  output clks2,
-  output locked,
-  output clko
-);
-  wire clkfb;
-  wire clkos;
-  wire clkop;
-  (* ICP_CURRENT="12" *) (* LPF_RESISTOR="8" *) (* MFG_ENABLE_FILTEROPAMP="1" *) (* MFG_GMCREF_SEL="2" *)
-  EHXPLLL #(
-      .PLLRST_ENA("DISABLED"),
-      .INTFB_WAKE("DISABLED"),
-      .STDBY_ENABLE("DISABLED"),
-      .DPHASE_SOURCE("DISABLED"),
-      .CLKOP_FPHASE(0),
-      .CLKOP_CPHASE(0),
-      .OUTDIVIDER_MUXA("DIVA"),
-      .CLKOP_ENABLE("ENABLED"),
-      .CLKOP_DIV(2),
-      .CLKOS_ENABLE("ENABLED"),
-      .CLKOS_DIV(4),
-      .CLKOS_CPHASE(0),
-      .CLKOS_FPHASE(0),
-      .CLKOS2_ENABLE("ENABLED"),
-      .CLKOS2_DIV(20),
-      .CLKOS2_CPHASE(0),
-      .CLKOS2_FPHASE(0),
-      .CLKFB_DIV(10),
-      .CLKI_DIV(1),
-      .FEEDBK_PATH("INT_OP")
-    ) pll_i (
-      .CLKI(clki),
-      .CLKFB(clkfb),
-      .CLKINTFB(clkfb),
-      .CLKOP(clkop),
-      .CLKOS(clks1),
-      .CLKOS2(clks2),
-      .RST(1'b0),
-      .STDBY(1'b0),
-      .PHASESEL0(1'b0),
-      .PHASESEL1(1'b0),
-      .PHASEDIR(1'b0),
-      .PHASESTEP(1'b0),
-      .PLLWAKESYNC(1'b0),
-      .ENCLKOP(1'b0),
-      .LOCK(locked)
-    );
-  assign clko = clkop;
-endmodule
-
-`endif
