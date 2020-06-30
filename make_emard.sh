@@ -34,7 +34,7 @@ $YOSYS -q -p "synth_ecp5 -json vdp.json" \
 
 # place & route
 # assumes 25F device
-$NEXTPNR_ECP5 --${FPGA_SIZE}k --package CABGA381 --json vdp.json --lpf ti99/ti99_2/ulx3s.lpf --lpf-allow-unconstrained --textcfg vdp.cfg
+$NEXTPNR_ECP5 --${FPGA_SIZE}k --package CABGA381 --json vdp.json --lpf ulx3s.lpf --lpf-allow-unconstrained --textcfg vdp.cfg
 
 # pack bitstream
 #LANG=C LD_LIBRARY_PATH=$LIBTRELLIS $ECPPACK --db $TRELLISDB --compress vdp.cfg vdp.bit --idcode 0x21111043

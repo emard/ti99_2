@@ -2,7 +2,7 @@ module sys
 (
   input  wire clk_25mhz,
   
-  output wire [3:0] gpdi_dp, gpdi_dn,
+  output wire [3:0] gpdi_dp,
 
   output wire usb_fpga_pu_dp, usb_fpga_pu_dn,
   input  wire usb_fpga_dp, usb_fpga_dn,
@@ -76,7 +76,8 @@ module sys
 `else
   vdp99_2  vdp(pll_25mhz, vde, hsyn, vsyn, video, vab, vdb_in, vma, hold, viden, vint);
 `endif
-  HDMI_out out(pll_25mhz, pll_125mhz, v8, v8, v8, vde, hsyn, vsyn, gpdi_dp, gpdi_dn);
+  wire [3:0] dummy_gpdi_dn;
+  HDMI_out out(pll_25mhz, pll_125mhz, v8, v8, v8, vde, hsyn, vsyn, gpdi_dp, dummy_gpdi_dn);
 
   // Basic CPU/RAM/ROM circuit
   //
